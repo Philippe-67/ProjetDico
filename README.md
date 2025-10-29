@@ -2,6 +2,32 @@
 
 Une application web complète pour gérer un dictionnaire avec traductions entre différentes langues.
 
+## 🧪 Tests
+
+Le projet inclut trois types de tests pour assurer la qualité du code :
+
+### Tests Unitaires
+- Situés dans le projet `MyApp.UnitTests`
+- Testent les composants individuellement (Controllers, Services, etc.)
+- Utilisent Moq pour le mocking et FluentAssertions pour les assertions
+- Exécution : `cd backend/MyApp.UnitTests && dotnet test`
+
+### Tests d'Intégration
+- Situés dans le projet `MyApp.IntegrationTests`
+- Testent l'interaction entre les composants
+- Exécution : `cd backend/MyApp.IntegrationTests && dotnet test`
+
+
+Pour exécuter tous les tests en une seule commande :
+```bash
+cd backend && dotnet test
+```
+
+Options de test utiles :
+- Tests détaillés : `dotnet test --logger "console;verbosity=detailed"`
+- Tests spécifiques : `dotnet test --filter "FullyQualifiedName=MyApp.UnitTests.Controllers.WordControllerTests.GetAllWords_ReturnsOkResult_WithListOfWords"`
+- Tests avec couverture : `dotnet test /p:CollectCoverage=true`
+
 ## 🎯 Fonctionnalités
 
 - ✅ Ajout de mots avec traductions

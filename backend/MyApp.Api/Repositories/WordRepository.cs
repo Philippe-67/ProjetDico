@@ -3,9 +3,11 @@ using MyApp.Api.Models;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using MongoDB.Driver;
+using MyApp.Api.Interfaces;
 
 
 namespace MyApp.Api.Repositories
+
 {
     public class WordRepository : IWordRepository
     {

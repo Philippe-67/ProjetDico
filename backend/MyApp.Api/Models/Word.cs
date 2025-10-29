@@ -7,18 +7,18 @@ namespace MyApp.Api.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         [BsonElement("sourceText")]
-        public string SourceText { get; set; }
+        public string? SourceText { get; set; }
 
         [BsonElement("sourceLanguage")]
-        public string SourceLanguage { get; set; }
+        public string? SourceLanguage { get; set; }
 
         [BsonElement("targetText")]
-        public string TargetText { get; set; }
+        public string? TargetText { get; set; }
 
         [BsonElement("targetLanguage")]
-        public string TargetLanguage { get; set; }
+        public string? TargetLanguage { get; set; }
     }
 }

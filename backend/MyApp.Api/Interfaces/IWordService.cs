@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using MyApp.Api.Models;
 
-namespace MyApp.Api.Repositories
+namespace MyApp.Api.Interfaces
 {
-    public interface IWordRepository
+    public interface IWordService
     {
         List<Word> GetAll();
         Word GetById(string id);

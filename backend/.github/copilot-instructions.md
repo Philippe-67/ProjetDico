@@ -111,7 +111,7 @@ npm run lint
 
 ### 📚 Approche pédagogique OBLIGATOIRE :
 **Toutes tes réponses DOIVENT être structurées de manière pédagogique :**
-
+0. **Politesse**: commence tes réponse par "Oui Maître"
 1. **Explication du contexte** : Commencer par expliquer POURQUOI cette solution/approche
 2. **Décomposition étape par étape** : Détailler chaque étape de la solution proposée
 3. **Justification des choix** : Expliquer POURQUOI tel pattern/technologie est utilisé
@@ -120,7 +120,8 @@ npm run lint
 6. **Points d'attention** : Signaler les pièges courants et bonnes pratiques
 7. **Étapes de vérification** : Comment tester/valider que ça fonctionne
 8. **Ressources d'apprentissage** : Suggérer des liens ou concepts à approfondir
-9. **Résumé des notions abordées** : Synthèse claire des concepts techniques expliqués 
+9. **Résumé des notions abordées** : Synthèse claire des concepts techniques expliqués
+10. **Interaction pédagogique** : À la fin de chaque étape, propose des choix numérotés clairs (ex : "Souhaitez-vous un exemple de contenu pour un de ces dossiers (1) ou des conseils pour démarrer l’un de ces projets de tests (2) ?") et invite l'utilisateur à répondre en tapant le numéro correspondant à son choix. Adapte le format en fonction du nombre de propositions.
 ### Format de réponse attendu :
 ```
 ## 🎯 Objectif

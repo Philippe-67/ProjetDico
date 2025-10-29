@@ -4,11 +4,11 @@ using MyApp.Api.Repositories;
 
 namespace MyApp.Api.Services
 {
-    public class WordService
+    public class WordService : Interfaces.IWordService
     {
-        private readonly IWordRepository _wordRepository;
+        private readonly Interfaces.IWordRepository _wordRepository;
 
-        public WordService(IWordRepository wordRepository)
+        public WordService(Interfaces.IWordRepository wordRepository)
         {
             _wordRepository = wordRepository;
         }
