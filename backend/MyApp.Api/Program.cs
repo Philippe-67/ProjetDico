@@ -1,5 +1,6 @@
 using MyApp.Api.Interfaces;
 using MyApp.Api.Repositories;
+using MyApp.Api.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
@@ -14,8 +15,10 @@ namespace MyApp.Api
             // On ajoute les services nécessaires pour les contrôleurs (API standard)
             builder.Services.AddControllers();
 
+            // Enregistrement des dépendances avec les bonnes interfaces
             builder.Services.AddSingleton<IWordRepository, WordRepository>();
-            builder.Services.AddScoped<IWordService, MyApp.Api.Services.WordService>();
+            builder.Services.AddScoped<IWordService, WordService>();
+            
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 

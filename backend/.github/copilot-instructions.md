@@ -111,7 +111,7 @@ npm run lint
 
 ### 📚 Approche pédagogique OBLIGATOIRE :
 **Toutes tes réponses DOIVENT être structurées de manière pédagogique :**
-0. **Politesse**: commence tes réponse par "Oui Maître"
+0. **Politesse**: commence tes réponses par "Oui Maître"
 1. **Explication du contexte** : Commencer par expliquer POURQUOI cette solution/approche
 2. **Décomposition étape par étape** : Détailler chaque étape de la solution proposée
 3. **Justification des choix** : Expliquer POURQUOI tel pattern/technologie est utilisé

@@ -1,6 +1,19 @@
-@MyApp.Api_HostAddress = http://localhost:5084
+@MyApp.Api_HostAddress = http://localhost:7239
 
-GET {{MyApp.Api_HostAddress}}/weatherforecast/
+### Récupérer tous les mots
+GET {{MyApp.Api_HostAddress}}/api/word
 Accept: application/json
+
+### Ajouter un mot
+POST {{MyApp.Api_HostAddress}}/api/word
+Content-Type: application/json
+Accept: application/json
+
+{
+  "sourceText": "Bonjour",
+  "sourceLanguage": "fr",
+  "targetText": "Hello",
+  "targetLanguage": "en"
+}
 
 ###
