@@ -4,10 +4,9 @@ using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using MongoDB.Driver;
 using MyApp.Api.Interfaces;
-
+using System.Threading.Tasks;
 
 namespace MyApp.Api.Repositories
-
 {
     public class WordRepository : IWordRepository
     {
@@ -15,36 +14,40 @@ namespace MyApp.Api.Repositories
 
         public WordRepository(IConfiguration configuration)
         {
+            // Création du client MongoDB à partir de la configuration
             var client = new MongoClient(configuration["MongoDb:ConnectionString"]);
             var database = client.GetDatabase(configuration["MongoDb:Database"]);
             _words = database.GetCollection<Word>("Words");
         }
 
-        public List<Word> GetAll()
+        // Récupération asynchrone de tous les mots
+        public async Task<List<Word>> GetAllAsync()
         {
-            return _words.Find(_ => true).ToList();
+            return await _words.Find(_ => true).ToListAsync();
         }
 
-        public Word GetById(string id)
+        // Récupération asynchrone par id
+        public async Task<Word?> GetByIdAsync(string id)
         {
-            return _words.Find(word => word.Id == id).FirstOrDefault();
+            return await _words.Find(word => word.Id == id).FirstOrDefaultAsync();
         }
 
-        public void Create(Word word)
+        // Insertion asynchrone
+        public async Task CreateAsync(Word word)
         {
-            _words.InsertOne(word);
+            await _words.InsertOneAsync(word);
         }
 
-        public void Update(string id, Word word)
+        // Remplacement asynchrone du document
+        public async Task UpdateAsync(string id, Word word)
         {
-            _words.ReplaceOne(w => w.Id == id, word);
+            await _words.ReplaceOneAsync(w => w.Id == id, word);
         }
 
-        public void Delete(string id)
+        // Suppression asynchrone
+        public async Task DeleteAsync(string id)
         {
-            _words.DeleteOne(w => w.Id == id);
+            await _words.DeleteOneAsync(w => w.Id == id);
         }
     }
 }
-
-       

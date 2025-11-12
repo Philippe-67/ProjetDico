@@ -22,7 +22,7 @@ namespace MyApp.UnitTests.Controllers
         }
 
         [Fact]
-        public void GetAllWords_ReturnsOkResult_WithListOfWords()
+        public async Task GetAllWords_ReturnsOkResult_WithListOfWords()
         {
             // Arrange
             var expectedWords = new List<Word>
@@ -31,16 +31,19 @@ namespace MyApp.UnitTests.Controllers
                 new Word { Id = "2", SourceText = "World", TargetText = "Monde" }
             };
 
-            _mockWordService.Setup(service => service.GetAll())
-                          .Returns(expectedWords);
+            // Correction : on retourne une Task contenant la liste attendue
+            _mockWordService.Setup(service => service.GetAllAsync())
+                            .ReturnsAsync(expectedWords);
 
             // Act
-            var result = _controller.GetAllWords();
+            var result = await _controller.GetAllWords();
 
             // Assert
+            // On récupère l'ActionResult<List<Word>> puis on vérifie le type de son résultat
             var actionResult = result.Result;
             actionResult.Should().NotBeNull().And.BeOfType<OkObjectResult>();
-            var okResult = (OkObjectResult)actionResult;
+            var okResult = actionResult as OkObjectResult;
+            okResult.Should().NotBeNull();
             okResult.Value.Should().NotBeNull().And.BeEquivalentTo(expectedWords);
         }
     }

@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using MyApp.Api.Repositories;
 using MyApp.Api.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using MyApp.Api.Interfaces;
 
 namespace MyApp.Api.Controllers
 {
@@ -9,9 +10,9 @@ namespace MyApp.Api.Controllers
     [Route("api/[controller]")]
     public class WordController : ControllerBase
     {
-        private readonly Interfaces.IWordService _wordService;
+        private readonly IWordService _wordService;
 
-        public WordController(Interfaces.IWordService wordService)
+        public WordController(IWordService wordService)
         {
             _wordService = wordService;
         }
@@ -23,11 +24,11 @@ namespace MyApp.Api.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(List<Word>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<List<Word>> GetAllWords()
+        public async Task<ActionResult<List<Word>>> GetAllWords()
         {
             try
             {
-                var words = _wordService.GetAll();
+                var words = await _wordService.GetAllAsync();
                 return Ok(words); // 200 OK avec la liste des mots
             }
             catch (Exception)
@@ -42,9 +43,9 @@ namespace MyApp.Api.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Word), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Word> GetWordById(string id)
+        public async Task<ActionResult<Word>> GetWordById(string id)
         {
-            var word = _wordService.GetById(id);
+            var word = await _wordService.GetByIdAsync(id);
             if (word == null)
                 return NotFound($"Aucun mot trouvé avec l'id {id}");
             return Ok(word);
@@ -57,7 +58,7 @@ namespace MyApp.Api.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult CreateWord([FromBody] Word word)
+        public async Task<ActionResult> CreateWord([FromBody] Word word)
         {
             try
             {
@@ -69,7 +70,7 @@ namespace MyApp.Api.Controllers
                     return BadRequest("Tous les champs sont obligatoires.");
                 }
 
-                _wordService.Create(word);
+                await _wordService.CreateAsync(word);
                 return CreatedAtAction(nameof(GetWordById), new { id = word.Id }, word);
             }
             catch (Exception)
@@ -85,7 +86,7 @@ namespace MyApp.Api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult UpdateWord(string id, [FromBody] Word word)
+        public async Task<IActionResult> UpdateWord(string id, [FromBody] Word word)
         {
             if (string.IsNullOrWhiteSpace(word.SourceText) ||
                 string.IsNullOrWhiteSpace(word.SourceLanguage) ||
@@ -95,11 +96,11 @@ namespace MyApp.Api.Controllers
                 return BadRequest("Tous les champs sont obligatoires.");
             }
 
-            var existing = _wordService.GetById(id);
+            var existing = await _wordService.GetByIdAsync(id);
             if (existing == null)
                 return NotFound($"Aucun mot trouvé avec l'id {id}");
 
-            _wordService.Update(id, word);
+            await _wordService.UpdateAsync(id, word);
             return NoContent();
         }
 
@@ -109,13 +110,13 @@ namespace MyApp.Api.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult DeleteWord(string id)
+        public async Task<IActionResult> DeleteWord(string id)
         {
-            var existing = _wordService.GetById(id);
+            var existing = await _wordService.GetByIdAsync(id);
             if (existing == null)
                 return NotFound($"Aucun mot trouvé avec l'id {id}");
 
-            _wordService.Delete(id);
+            await _wordService.DeleteAsync(id);
             return NoContent();
         }
     }
