@@ -1,0 +1,149 @@
+.quiz-mode-container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.quiz-mode-header {
+  background: linear-gradient(135deg, #28a745, #1e7e34);
+  color: white;
+  padding: 1.5rem;
+  position: relative;
+  text-align: center;
+}
+
+.quiz-mode-header h2 {
+  margin: 0 0 1rem 0;
+}
+
+.progress-bar {
+  background: rgba(255,255,255,0.3);
+  border-radius: 10px;
+  height: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.progress-fill {
+  background: white;
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.exit-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.quiz-mode-content {
+  padding: 2rem;
+}
+
+.question-section {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.source-word h3 {
+  font-size: 2rem;
+  margin: 1rem 0;
+  color: #333;
+}
+
+.language-badge {
+  background: #e9ecef;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: #666;
+}
+
+.question-section p {
+  color: #666;
+  margin-top: 1rem;
+}
+
+.options-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.option-btn {
+  padding: 1.5rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.option-btn:hover:not(:disabled) {
+  border-color: #007bff;
+  background: #f8f9fa;
+}
+
+.option-btn.selected {
+  border-color: #007bff;
+  background: #e3f2fd;
+}
+
+.option-btn.correct {
+  border-color: #28a745;
+  background: #d4edda;
+  color: #155724;
+}
+
+.option-btn.incorrect {
+  border-color: #dc3545;
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.option-btn:disabled {
+  cursor: not-allowed;
+}
+
+.action-buttons {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.check-btn, .next-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  min-width: 150px;
+}
+
+.check-btn:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+}
+
+.score {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #666;
+}

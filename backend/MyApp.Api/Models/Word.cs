@@ -20,5 +20,8 @@ namespace MyApp.Api.Models
 
         [BsonElement("targetLanguage")]
         public string? TargetLanguage { get; set; }
+
+        [BsonElement("userId")]
+        public string? UserId { get; set; }
     }
 }

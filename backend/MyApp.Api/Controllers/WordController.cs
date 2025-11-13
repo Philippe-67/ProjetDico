@@ -6,8 +6,11 @@ using MyApp.Api.Interfaces;
 
 namespace MyApp.Api.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
+
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class WordController : ControllerBase
     {
         private readonly IWordService _wordService;
@@ -28,8 +31,10 @@ namespace MyApp.Api.Controllers
         {
             try
             {
+                var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
                 var words = await _wordService.GetAllAsync();
-                return Ok(words); // 200 OK avec la liste des mots
+                var userWords = words.Where(w => w.UserId == userId).ToList();
+                return Ok(userWords); // 200 OK avec la liste des mots de l'utilisateur
             }
             catch (Exception)
             {
@@ -70,6 +75,8 @@ namespace MyApp.Api.Controllers
                     return BadRequest("Tous les champs sont obligatoires.");
                 }
 
+                var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                word.UserId = userId;
                 await _wordService.CreateAsync(word);
                 return CreatedAtAction(nameof(GetWordById), new { id = word.Id }, word);
             }

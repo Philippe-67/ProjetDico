@@ -1,0 +1,22 @@
+.notification {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  color: #fff;
+  z-index: 1000;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+.notification.success { background: #28a745; }
+.notification.error { background: #dc3545; }
+.notification.info { background: #007bff; }
+.close-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  margin-left: 1rem;
+  cursor: pointer;
+}

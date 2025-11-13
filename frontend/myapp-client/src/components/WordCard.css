@@ -1,0 +1,156 @@
+/* Styles pour le composant WordCard */
+
+.word-card {
+    /* Structure : Flexbox pour aligner horizontalement les éléments */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    /* Espacement et dimensions */
+    padding: 1.5rem;
+    margin: 1rem 0;
+    
+    /* Style visuel */
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    
+    /* Transition pour les effets de survol */
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+/* Effet de survol pour améliorer l'interactivité */
+.word-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    border-color: #007bff;
+}
+
+/* Section de mot (source et cible) */
+.word-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    text-align: center;
+}
+
+/* Label de la langue */
+.language-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    background: #f8f9fa;
+    border-radius: 20px;
+}
+
+/* Texte du mot */
+.word-text {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #333;
+    word-wrap: break-word;
+    max-width: 100%;
+}
+
+/* Flèche de traduction */
+.translation-arrow {
+    font-size: 1.5rem;
+    color: #007bff;
+    margin: 0 1rem;
+    font-weight: bold;
+}
+
+/* Styles pour les différentes langues (optionnel) */
+.word-section.source .language-label {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.word-section.target .language-label {
+    background: #f3e5f5;
+    color: #7b1fa2;
+}
+
+/* Boutons d'action */
+.word-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-left: 1rem;
+}
+
+.action-button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    min-height: 40px;
+}
+
+.action-button:hover {
+    background: #f8f9fa;
+    transform: scale(1.1);
+}
+
+.edit-button:hover {
+    background: #e3f2fd;
+}
+
+.delete-button:hover {
+    background: #ffebee;
+}
+
+.action-button:active {
+    transform: scale(0.95);
+}
+
+/* Card d'erreur */
+.word-card.error {
+    background: #fff5f5;
+    border-color: #feb2b2;
+    color: #c53030;
+    justify-content: center;
+}
+
+/* Responsivité pour les petits écrans */
+@media (max-width: 768px) {
+    .word-card {
+        flex-direction: column;
+        padding: 1rem;
+    }
+    
+    .translation-arrow {
+        transform: rotate(90deg);
+        margin: 0.5rem 0;
+    }
+    
+    .word-section {
+        width: 100%;
+        margin: 0.5rem 0;
+    }
+    
+    .word-text {
+        font-size: 1.1rem;
+    }
+    
+    .word-actions {
+        flex-direction: row;
+        margin-left: 0;
+        margin-top: 1rem;
+        justify-content: center;
+    }
+}

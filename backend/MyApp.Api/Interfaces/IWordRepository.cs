@@ -3,13 +3,13 @@ using MyApp.Api.Models;
 
 namespace MyApp.Api.Interfaces
 {
-    // Contrat d'accès aux données : méthodes asynchrones pour I/O
+    // Contrat d'accÃ¨s aux donnÃ©es : mÃ©thodes asynchrones pour I/O
     public interface IWordRepository
     {
-        Task<List<Word>> GetAllAsync();             // Récupérer tous les mots (async)
-        Task<Word?> GetByIdAsync(string id);        // Récupérer un mot par id (async)
-        Task CreateAsync(Word word);                // Insérer un mot (async)
-        Task UpdateAsync(string id, Word word);     // Mettre à jour un mot (async)
+        Task<List<Word>> GetAllAsync();             // RÃ©cupÃ©rer tous les mots (async)
+        Task<Word?> GetByIdAsync(string id);        // RÃ©cupÃ©rer un mot par id (async)
+        Task CreateAsync(Word word);                // InsÃ©rer un mot (async)
+        Task UpdateAsync(string id, Word word);     // Mettre Ã  jour un mot (async)
         Task DeleteAsync(string id);                // Supprimer un mot (async)
     }
 }
