@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import * as React from 'react';
+import { useState } from 'react';
 import { WordService } from '../services/wordService';
 import type { CreateWordRequest, SupportedLanguage } from '../types';
 import './WordForm.css';

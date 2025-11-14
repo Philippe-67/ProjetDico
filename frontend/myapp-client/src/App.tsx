@@ -6,6 +6,7 @@
 
 import * as React from 'react';
 import { useState } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import WordList from './components/WordList';
 import WordForm from './components/WordForm';
 import Notification from './components/Notification';
@@ -16,6 +17,7 @@ import LearningResults from './components/LearningResults';
 import type { Word } from './types';
 import RegisterForm from './components/RegisterForm';
 import LoginForm from './components/LoginForm';
+import Layout from './components/Layout';
 import './AppStyles.css';
 
 type LearningModeType = 'copy' | 'quiz' | null;
@@ -25,8 +27,8 @@ type AppState = 'list' | 'modeSelection' | 'learning' | 'results';
  * Composant principal de l'application
  */
 const App: React.FC = () => {
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => !!localStorage.getItem('jwt'));
-    const [showLogin, setShowLogin] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => !!localStorage.getItem('jwt'));
+  const [showLogin, setShowLogin] = useState(true);
   const [notification, setNotification] = useState<{ message: string; type?: 'success' | 'error' } | null>(null);
   const [refreshFlag, setRefreshFlag] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
@@ -51,17 +53,22 @@ const App: React.FC = () => {
     setRefreshFlag(f => f + 1);
   };
 
-  const handleStartLearning = (words: Word[]) => {
-    if (words.length === 0) {
-      showNotification('Aucun mot à apprendre !', 'error');
-      return;
-    }
-    setWordsForLearning(words);
-    setAppState('modeSelection');
-  };
-
-  const handleModeSelect = (mode: LearningModeType) => {
+  const handleModeSelect = async (mode: LearningModeType) => {
     setLearningMode(mode);
+    // Charger les mots depuis filteredWords s'ils existent, sinon depuis l'API
+    if (filteredWords.length > 0) {
+      setWordsForLearning(filteredWords);
+    } else {
+      // Si pas de mots filtrés, utiliser tous les mots de l'utilisateur
+      try {
+        const { WordService } = await import('./services/wordService');
+        const allWords = await WordService.getAllWords();
+        setWordsForLearning(allWords);
+      } catch (error) {
+        showNotification('Erreur lors du chargement des mots', 'error');
+        return;
+      }
+    }
     setAppState('learning');
   };
 
@@ -79,6 +86,8 @@ const App: React.FC = () => {
     setLearningMode(null);
     setWordsForLearning([]);
     setLearningResults(null);
+    // Rediriger vers la page d'accueil
+    window.location.href = '/';
   };
 
   const handleLogout = () => {
@@ -88,36 +97,19 @@ const App: React.FC = () => {
     showNotification('Déconnexion réussie', 'success');
   };
 
+  const handleHomeNavigation = () => {
+    setAppState('list');
+    setLearningMode(null);
+    setLearningResults(null);
+  };
+
+  const handleLearningNavigation = () => {
+    setAppState('modeSelection');
+    setLearningMode(null);
+    setLearningResults(null);
+  };
+
   const renderContent = () => {
-    if (!isAuthenticated) {
-      return (
-        <div style={{ maxWidth: 500, margin: '2rem auto' }}>
-          {showLogin ? (
-            <>
-              <LoginForm
-                onLoginSuccess={() => { setIsAuthenticated(true); }}
-                onError={msg => showNotification(msg, 'error')}
-              />
-              <p style={{ textAlign: 'center', marginTop: '1rem' }}>
-                Pas encore de compte ?{' '}
-                <button type="button" style={{ color: '#007bff', background: 'none', border: 'none', cursor: 'pointer' }} onClick={() => setShowLogin(false)}>S'inscrire</button>
-              </p>
-            </>
-          ) : (
-            <>
-              <RegisterForm
-                onRegisterSuccess={() => { setShowLogin(true); showNotification('Inscription réussie, connectez-vous !', 'success'); }}
-                onError={msg => showNotification(msg, 'error')}
-              />
-              <p style={{ textAlign: 'center', marginTop: '1rem' }}>
-                Déjà inscrit ?{' '}
-                <button type="button" style={{ color: '#007bff', background: 'none', border: 'none', cursor: 'pointer' }} onClick={() => setShowLogin(true)}>Se connecter</button>
-              </p>
-            </>
-          )}
-        </div>
-      );
-    }
     switch (appState) {
       case 'modeSelection':
         return (
@@ -126,7 +118,6 @@ const App: React.FC = () => {
             onClose={handleExitLearning}
           />
         );
-      
       case 'learning':
         if (learningMode === 'copy') {
           return (
@@ -145,10 +136,9 @@ const App: React.FC = () => {
             />
           );
         }
-        break;
-      
+        return null;
       case 'results':
-        return learningResults && (
+        return learningResults ? (
           <LearningResults
             score={learningResults.score}
             totalWords={learningResults.total}
@@ -156,15 +146,14 @@ const App: React.FC = () => {
             onRestart={handleRestartLearning}
             onExit={handleExitLearning}
           />
-        );
-      
+        ) : null;
       default:
         return (
           <>
-            <WordForm
+            {/* <WordForm
               onWordCreated={handleWordCreated as () => void}
               onError={showNotification as (msg: string, type?: 'success' | 'error') => void}
-            />
+            /> */}
             <div className="search-bar">
               <input
                 type="text"
@@ -173,23 +162,6 @@ const App: React.FC = () => {
                 onChange={e => setSearchTerm(e.target.value)}
                 style={{ width: '100%', padding: '0.5rem', marginBottom: '1rem', borderRadius: '6px', border: '1px solid #ccc' }}
               />
-            </div>
-            <div className="learning-button-container" style={{ textAlign: 'center', marginBottom: '2rem' }}>
-              <button 
-                className="learning-start-btn"
-                onClick={() => handleStartLearning(filteredWords)}
-                style={{ 
-                  background: '#28a745', 
-                  color: 'white', 
-                  border: 'none', 
-                  padding: '1rem 2rem', 
-                  borderRadius: '8px', 
-                  fontSize: '1.1rem', 
-                  cursor: 'pointer' 
-                }}
-              >
-                🧠 Commencer l'apprentissage
-              </button>
             </div>
             <WordList
               onWordSelect={handleWordSelect as (word: Word) => void}
@@ -203,38 +175,149 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="app">
-      {notification && (
-        <Notification
-          message={notification.message}
-          type={notification.type}
-          onClose={() => setNotification(null)}
-        />
-      )}
-      {appState === 'list' && isAuthenticated && (
-        <div style={{ textAlign: 'right', padding: '1rem 2rem 0 0' }}>
-          <button onClick={handleLogout} style={{ background: '#dc3545', color: '#fff', border: 'none', borderRadius: 6, padding: '0.5rem 1.2rem', cursor: 'pointer' }}>Déconnexion</button>
-        </div>
-      )}
-      {appState === 'list' && (
-        <>
-          <header className="app-header">
-            <div className="container">
-              <h1>📚 Mon Dictionnaire</h1>
-              <p>Explorez et gérez vos traductions multilingues</p>
-            </div>
-          </header>
-          <footer className="app-footer">
-            <div className="container">
-              <p>&copy; 2024 Mon Dictionnaire - Application de traduction multilingue</p>
-            </div>
-          </footer>
-        </>
-      )}
-      <main className="app-main">
-        {renderContent()}
-      </main>
-    </div>
+    <BrowserRouter>
+      <div className="app">
+        {notification && (
+          <Notification
+            message={notification.message}
+            type={notification.type}
+            onClose={() => setNotification(null)}
+          />
+        )}
+        <Routes>
+          <Route
+            path="/login"
+            element={
+              isAuthenticated
+                ? <Navigate to="/" replace />
+                : (
+                  <Layout isAuthenticated={false}>
+                    <div style={{ maxWidth: 500, margin: '2rem auto' }}>
+                      {showLogin ? (
+                        <>
+                          <LoginForm
+                            onLoginSuccess={() => { setIsAuthenticated(true); }}
+                            onError={msg => showNotification(msg, 'error')}
+                          />
+                          <p style={{ textAlign: 'center', marginTop: '1rem' }}>
+                            Pas encore de compte ?{' '}
+                            <button type="button" style={{ color: '#007bff', background: 'none', border: 'none', cursor: 'pointer' }} onClick={() => setShowLogin(false)}>S'inscrire</button>
+                          </p>
+                        </>
+                      ) : (
+                        <>
+                          <RegisterForm
+                            onRegisterSuccess={() => { setShowLogin(true); showNotification('Inscription réussie, connectez-vous !', 'success'); }}
+                            onError={msg => showNotification(msg, 'error')}
+                          />
+                          <p style={{ textAlign: 'center', marginTop: '1rem' }}>
+                            Déjà inscrit ?{' '}
+                            <button type="button" style={{ color: '#007bff', background: 'none', border: 'none', cursor: 'pointer' }} onClick={() => setShowLogin(true)}>Se connecter</button>
+                          </p>
+                        </>
+                      )}
+                    </div>
+                  </Layout>
+                )
+            }
+          />
+          <Route
+            path="/apprentissage"
+            element={
+              isAuthenticated
+                ? (
+                  <Layout 
+                    isAuthenticated={true}
+                    onHomeClick={handleHomeNavigation}
+                    onLearningClick={handleLearningNavigation}
+                    onLogoutClick={handleLogout}
+                  >
+                    {appState === 'learning' && learningMode === 'copy' && wordsForLearning.length > 0 ? (
+                      <CopyMode
+                        words={wordsForLearning}
+                        onComplete={handleLearningComplete}
+                        onExit={handleExitLearning}
+                      />
+                    ) : appState === 'learning' && learningMode === 'quiz' && wordsForLearning.length > 0 ? (
+                      <QuizMode
+                        words={wordsForLearning}
+                        onComplete={handleLearningComplete}
+                        onExit={handleExitLearning}
+                      />
+                    ) : appState === 'results' && learningResults ? (
+                      <LearningResults
+                        score={learningResults.score}
+                        totalWords={learningResults.total}
+                        mode={learningMode || 'copy'}
+                        onRestart={handleRestartLearning}
+                        onExit={handleExitLearning}
+                      />
+                    ) : appState === 'learning' && wordsForLearning.length === 0 ? (
+                      <div style={{ textAlign: 'center', padding: '2rem' }}>
+                        <p>Chargement des mots...</p>
+                      </div>
+                    ) : (
+                      <LearningModeSelector
+                        onModeSelect={handleModeSelect}
+                        onClose={handleExitLearning}
+                      />
+                    )}
+                  </Layout>
+                )
+                : <Navigate to="/login" replace />
+            }
+          />
+          <Route
+            path="/"
+            element={
+              isAuthenticated
+                ? (
+                  <Layout 
+                    isAuthenticated={true}
+                    onHomeClick={handleHomeNavigation}
+                    onLearningClick={handleLearningNavigation}
+                    onLogoutClick={handleLogout}
+                  >
+                    {appState === 'list' && (
+                      <>
+                        <div style={{ textAlign: 'right', padding: '1rem 2rem 0 0' }}>
+                          {/* Le bouton Déconnexion est maintenant dans la nav */}
+                        </div>
+                      </>
+                    )}
+                    <main className="app-main">
+                      {renderContent()}
+                    </main>
+                  </Layout>
+                )
+                : <Navigate to="/login" replace />
+            }
+          />
+          <Route
+            path="/ajouter-mot"
+            element={
+              isAuthenticated
+                ? (
+                  <Layout 
+                    isAuthenticated={true}
+                    onHomeClick={handleHomeNavigation}
+                    onLearningClick={handleLearningNavigation}
+                    onLogoutClick={handleLogout}
+                  >
+                    <WordForm
+                      onWordCreated={handleWordCreated as () => void}
+                      onError={showNotification as (msg: string, type?: 'success' | 'error') => void}
+                    />
+                  </Layout>
+                )
+                : <Navigate to="/login" replace />
+            }
+          />
+
+          <Route path="*" element={<Navigate to={isAuthenticated ? "/" : "/login"} replace />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 };
 

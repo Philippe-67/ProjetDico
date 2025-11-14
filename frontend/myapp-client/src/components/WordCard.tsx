@@ -1,6 +1,6 @@
 /**
  * Composant WordCard - Affiche les informations d'un mot du dictionnaire
- * Ce composant pr�sente de mani�re visuelle les donn�es d'un mot avec sa traduction
+ * Ce composant présente de manière visuelle les données d'un mot avec sa traduction
  * Version TypeScript avec typage strict des props
  */
 
@@ -67,7 +67,7 @@ const WordCard: React.FC<WordCardProps> = ({
         </div>
       </div>
 
-      {/* Fl�che de traduction */}
+      {/* Flèche de traduction */}
       <div className="translation-arrow">
         <span aria-label="Traduction" title="Traduction">→</span>
       </div>

@@ -1,0 +1,138 @@
+Styles de base pour le layout
+.app-header {
+  background: #007bff;
+  color: #fff;
+  padding: 1rem 0;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding-left: 0;
+  padding-right: 0;
+  box-sizing: border-box;
+}
+.app-header h1 {
+  margin: 0;
+  font-size: 2rem;
+  text-align: center;
+}
+.app-nav {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+}
+.app-nav a {
+  color: #fff;
+  margin-right: 1.5rem;
+  text-decoration: none;
+  font-weight: bold;
+}
+.app-nav a:hover {
+  text-decoration: underline;
+}
+.app-main {
+  min-height: 60vh;
+  padding: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+.app-main h2 {
+  margin: 0.5rem 0;
+  font-size: 1.5rem;
+}
+.app-footer {
+  
+  background:  rgb(0, 86, 179);
+    color: var(--white);
+    padding: 1.5rem 0;
+    text-align: center;
+    margin-top: auto;
+
+}
+
+html, body, .app-main, .app-header, .app-footer {
+  width: 100%;
+  min-width: 0;
+}
+body, .app-main {
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+.container {
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 2vw;
+}
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+.app-main {
+  flex: 1 1 auto;
+  min-height: calc(100vh - 120px); /* header + footer approx */
+   width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+.app-header, .app-footer {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+.app-header .container, .app-footer .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  padding: 0 2vw;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1200px;
+}
+.app-header h1 {
+  text-align: center;
+}
+.app-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+} 
+.app-footer .container p {
+  text-align: center;
+} 
+.app-header {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 1rem 0;
+  background: #007bff;
+  color: #fff;
+  box-sizing: border-box;
+}
+.app-header .container {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.search-bar{
+    width: 400px;
+}

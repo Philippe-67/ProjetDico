@@ -54,7 +54,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess, onError }) => {
         <label>Mot de passe</label>
         <input type="password" value={password} onChange={e => setPassword(e.target.value)} required style={{ width: '100%', padding: '0.5rem', marginBottom: '1rem' }} />
       </div>
-      <button type="submit" disabled={loading} style={{ width: '100%', padding: '0.75rem', background: '#28a745', color: '#fff', border: 'none', borderRadius: 6 }}>Se connecter</button>
+      <button type="submit" disabled={loading} style={{ width: '100%', padding: '0.75rem',background: '#0056b3', /*background: '#28a745'*/ color: '#fff', border: 'none', borderRadius: 6 }}>Se connecter</button>
       {error && <div style={{ color: '#dc3545', marginTop: '1rem' }}>{error}</div>}
     </form>
   );
